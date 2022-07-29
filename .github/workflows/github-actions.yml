@@ -14,11 +14,16 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-      - name: Build and push
+      - name: Build Image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: mts_api
+          tags: ["latest"]
+      - name: Push to github registry
         uses: redhat-actions/push-to-registry@v2
         with:
           image: mts_api
-          tags: ${{ github.sha }}
+          tags: ["latest"]
           registry: ghcr.io
           username: giaunguyen2176
           password: ${{ secrets.GITHUB_TOKEN }}
