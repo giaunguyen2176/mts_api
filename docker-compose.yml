@@ -19,7 +19,7 @@ services:
     networks:
       - mts_api
 
-  api:
+  app:
     build:
       context: ./
     working_dir: /src
