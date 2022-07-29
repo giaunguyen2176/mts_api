@@ -3,7 +3,7 @@ resource "aws_ecs_task_definition" "mts" {
   container_definitions = jsonencode([
     {
       name      = "mts_api"
-      image     = "service-first"
+      image     = "ghcr.io/giaunguyen2176/mts_api:latest"
       cpu       = 10
       memory    = 512
       essential = true
