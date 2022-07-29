@@ -20,6 +20,7 @@ jobs:
         with:
           image: mts_api
           tags: latest ${{ github.sha }}
+          base-image: node:16
       - name: Push to github registry
         uses: redhat-actions/push-to-registry@v2
         with:
