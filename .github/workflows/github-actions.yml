@@ -18,12 +18,14 @@ jobs:
         uses: redhat-actions/buildah-build@v2
         with:
           image: mts_api
-          tags: ["latest"]
+          tags:
+            - latest
       - name: Push to github registry
         uses: redhat-actions/push-to-registry@v2
         with:
           image: mts_api
-          tags: ["latest"]
+          tags:
+            - latest
           registry: ghcr.io
           username: giaunguyen2176
           password: ${{ secrets.GITHUB_TOKEN }}
