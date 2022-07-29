@@ -17,7 +17,7 @@ jobs:
       - name: Build and push
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: ${{ mts_api }}
+          image: mts_api
           tags: ${{ github.sha }}
           registry: ghcr.io
           username: giaunguyen2176
