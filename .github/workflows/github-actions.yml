@@ -17,8 +17,8 @@ jobs:
       - name: Build and push
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: ${{ steps.build-image.outputs.image }}
-          tags: ${{ steps.build-image.outputs.tags }}
+          image: ${{ mts_api }}
+          tags: ${{ github.sha }}
           registry: ghcr.io
           username: giaunguyen2176
           password: ${{ secrets.GITHUB_TOKEN }}
