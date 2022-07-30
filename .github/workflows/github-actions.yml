@@ -14,19 +14,13 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
-      - name: Build Image
-        id: build-image
-        uses: redhat-actions/buildah-build@v2
-        with:
-          image: mts_api
-          tags: latest ${{ github.sha }}
-          base-image: node:16
+      - name: Build image
+        run: docker build -t ${GITHUB_REPOSITORY}:latest .
       - name: Push to github registry
         uses: redhat-actions/push-to-registry@v2
         with:
           id: push-image
-          image: ${{ steps.build-image.outputs.image }}
-          tags: ${{ steps.build-image.outputs.tags }}
+          tags: ${GITHUB_REPOSITORY}:latest
           registry: ghcr.io/${{ github.repository_owner }}
           username: ${{ github.actor }}
           password: ${{ github.token }}
