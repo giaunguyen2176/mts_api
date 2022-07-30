@@ -15,12 +15,12 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - name: Build image
-        run: docker build -t mts_api:latest .
+        run: docker build -t ${{github.event.repository.name}}:latest .
       - name: Push to github registry
         uses: redhat-actions/push-to-registry@v2
         with:
           id: push-image
-          image: mts_api
+          image: ${{ github.event.repository.name }}
           tags: latest
           registry: ghcr.io/${{ github.repository_owner }}
           username: ${{ github.actor }}
