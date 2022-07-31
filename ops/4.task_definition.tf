@@ -29,8 +29,7 @@ resource "aws_ecs_task_definition" task_definition {
         }
       },
       command = [
-        "npm",
-        "start"
+        "./entrypoint.sh"
       ],
       environment = [
         {

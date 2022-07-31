@@ -1,6 +1,11 @@
 const config = require('../knexfile');
 const knex = require('knex')(config);
+const bookshelf = require('bookshelf')(knex);
 const debug = require('debug')('mts-api:server');
+
+bookshelf.plugin('bookshelf-case-converter-plugin');
+
+const ModelBase = require('bookshelf-modelbase')(bookshelf);
 
 knex.raw('SELECT 1').then(() => {
   debug('Database connected');
@@ -10,4 +15,4 @@ knex.raw('SELECT 1').then(() => {
     debug(e);
   });
 
-module.exports = require('bookshelf')(knex);
+module.exports = ModelBase;

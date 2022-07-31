@@ -1,5 +1,7 @@
 // load env
 require('dotenv').config();
+// init db
+require('./models/bookshelf');
 
 let createError = require('http-errors');
 let express = require('express');
@@ -10,11 +12,7 @@ let logger = require('morgan');
 let cors = require('cors');
 let helmet = require('helmet');
 
-// init db
-require('./models/bookshelf');
-
-let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users');
+let routes = require('./routes');
 
 let app = express();
 
@@ -31,8 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
