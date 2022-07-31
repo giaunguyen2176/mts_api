@@ -1,4 +1,4 @@
-1. Install terraform
+1. Install terraform: https://www.terraform.io/downloads
 
 2. Init infrastructure
 

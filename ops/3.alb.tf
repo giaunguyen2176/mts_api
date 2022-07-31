@@ -1,17 +1,18 @@
 resource "aws_lb" "alb" {
-  name               = var.name
+  name               = "${var.cluster}-${var.service}"
   internal           = false
   load_balancer_type = "application"
   subnets            = data.aws_subnets.public.ids
   enable_deletion_protection = false
+  security_groups = [data.aws_security_group.allow_http_https.id, data.aws_security_group.default.id]
 }
 
 resource "aws_lb_target_group" "target_group" {
-  name        = var.name
+  name        = "${var.cluster}-${var.service}"
   target_type = "ip"
   port        = var.containers["api"].host_port
   protocol    = "HTTP"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = data.aws_vpc.default.id
   health_check {
     path = "/"
   }
@@ -39,10 +40,38 @@ resource "aws_alb_listener" "https" {
   protocol          = "HTTPS"
 
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.alb_tls_cert
+  certificate_arn   = aws_acm_certificate.cert.arn
 
   default_action {
     target_group_arn = aws_lb_target_group.target_group.id
     type             = "forward"
   }
 }
+
+resource "aws_acm_certificate" "cert" {
+  domain_name       = var.r53_endpoint
+  validation_method = "DNS"
+}
+
+resource "aws_route53_record" "cert_record" {
+  for_each = {
+    for dvo in aws_acm_certificate.cert.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = data.aws_route53_zone.default.zone_id
+}
+
+resource "aws_acm_certificate_validation" "certificate_validation" {
+  certificate_arn         = aws_acm_certificate.cert.arn
+  validation_record_fqdns = [for record in aws_route53_record.cert_record : record.fqdn]
+}
+

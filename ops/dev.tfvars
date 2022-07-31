@@ -1,8 +1,8 @@
-name                = "mts-dev"
-cidr                = "10.0.0.0/16"
-private_subnets     = ["10.0.0.0/20", "10.0.32.0/20"]
-public_subnets      = ["10.0.16.0/20", "10.0.48.0/20"]
-availability_zones  = ["ap-southeast-1a", "ap-southeast-1b", "ap-southeast-1c"]
+is_production         = false
+cluster               = "mts-dev"
+service               = "mts-api"
+r53_zone              = "mts.escape30.com"
+r53_endpoint          = "api.mts.escape30.com"
 task_definition = {
   memory              = 1024
   cpu                 = 256
@@ -17,7 +17,15 @@ containers = {
     cpu                 = 10
   }
 }
-alb_tls_cert = "arn:aws:acm:ap-southeast-1:830394630098:certificate/c2eecd9e-d7bb-49c3-a455-33ca104797da"
+rds = {
+  engine               = "postgres"
+  engine_version       = "12.10"
+  instance_class       = "db.t3.micro"
+  username             = "mts"
+  password             = "mtstest2022"
+  parameter_group_name = "default.postgres12"
+  db_name              = "mts_dev_mts_api"
+}
 environment_variables = {
   node_env = "development"
   debug = "mts-api:*"

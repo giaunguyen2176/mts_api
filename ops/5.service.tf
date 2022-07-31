@@ -1,6 +1,6 @@
 resource "aws_ecs_service" "service" {
-  name            = "${var.name}-api"
-  cluster         = aws_ecs_cluster.cluster.id
+  name            = var.service
+  cluster         = data.aws_ecs_cluster.default.id
   task_definition = aws_ecs_task_definition.task_definition.id
   desired_count   = 1
   force_new_deployment = true
@@ -18,14 +18,15 @@ resource "aws_ecs_service" "service" {
   }
 
   network_configuration {
-    subnets = data.aws_subnets.private.ids
+    subnets = data.aws_subnets.public.ids
+    assign_public_ip = true
   }
 }
 
 resource "aws_appautoscaling_target" "ecs_target" {
   max_capacity       = 4
   min_capacity       = 1
-  resource_id        = "service/${aws_ecs_cluster.cluster.name}/${aws_ecs_service.service.name}"
+  resource_id        = "service/${data.aws_ecs_cluster.default.cluster_name}/${aws_ecs_service.service.name}"
   scalable_dimension = "ecs:service:DesiredCount"
   service_namespace  = "ecs"
 }

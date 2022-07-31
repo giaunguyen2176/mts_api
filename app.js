@@ -10,6 +10,9 @@ let logger = require('morgan');
 let cors = require('cors');
 let helmet = require('helmet');
 
+// init db
+require('./models/bookshelf');
+
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 
