@@ -1,13 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const publicRoutes = require('./public');
 const privateRoutes = require('./private');
+const users = require('./users');
 const formatter = require('./formatter');
 const errorHandler = require('./errorHandler');
 
 router.use(formatter());
-router.use('/public', publicRoutes);
+
+// private routes inside /private namespace
 router.use('/private', privateRoutes);
+
+// public routes
+router.use('/users', users);
+
 router.use(errorHandler());
 
 module.exports = router;

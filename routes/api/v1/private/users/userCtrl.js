@@ -2,7 +2,9 @@ const User = require('../../../../../models/User');
 
 async function index(req, res, next) {
   let users = await User.findAll();
-  res.json(users);
+  res.json(users.map((user) => {
+    return {id: user.id, name: user.get('name')};
+  }));
 }
 
 async function get(req, res) {
