@@ -15,4 +15,6 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+RUN chmod a+x entrypoint.sh
+
 EXPOSE 3000
