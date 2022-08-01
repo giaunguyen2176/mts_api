@@ -10,7 +10,7 @@ resource "aws_lb" "alb" {
 resource "aws_lb_target_group" "target_group" {
   name        = "${var.cluster}-${var.service}"
   target_type = "ip"
-  port        = var.containers["api"].host_port
+  port        = var.containers["app"].host_port
   protocol    = "HTTP"
   vpc_id      = data.aws_vpc.default.id
   health_check {
@@ -75,3 +75,14 @@ resource "aws_acm_certificate_validation" "certificate_validation" {
   validation_record_fqdns = [for record in aws_route53_record.cert_record : record.fqdn]
 }
 
+resource "aws_route53_record" "endpoint" {
+  name            = var.r53_endpoint
+  zone_id         = data.aws_route53_zone.default.zone_id
+  type            = "A"
+
+  alias {
+    name                   = aws_lb.alb.dns_name
+    zone_id                = aws_lb.alb.zone_id
+    evaluate_target_health = true
+  }
+}

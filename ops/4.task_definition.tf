@@ -8,15 +8,15 @@ resource "aws_ecs_task_definition" task_definition {
 
   container_definitions = jsonencode([
     {
-      name      = var.containers["api"].name
-      image     = var.containers["api"].image
-      cpu       = tonumber(var.containers["api"].cpu)
-      memory    = tonumber(var.containers["api"].memory)
+      name      = var.containers["app"].name
+      image     = var.containers["app"].image
+      cpu       = tonumber(var.containers["app"].cpu)
+      memory    = tonumber(var.containers["app"].memory)
       essential = true
       portMappings = [
         {
-          containerPort = tonumber(var.containers["api"].container_port)
-          hostPort      = tonumber(var.containers["api"].host_port)
+          containerPort = tonumber(var.containers["app"].container_port)
+          hostPort      = tonumber(var.containers["app"].host_port)
         }
       ]
       logConfiguration = {

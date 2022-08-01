@@ -13,8 +13,8 @@ resource "aws_ecs_service" "service" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.target_group.arn
-    container_name   = var.containers["api"].name
-    container_port   = var.containers["api"].container_port
+    container_name   = var.containers["app"].name
+    container_port   = var.containers["app"].container_port
   }
 
   network_configuration {

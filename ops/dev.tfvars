@@ -8,7 +8,7 @@ task_definition = {
   cpu                 = 256
 }
 containers = {
-  api = {
+  app = {
     name                = "mts_api"
     container_port      = 3000
     host_port           = 3000
