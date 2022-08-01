@@ -19,7 +19,6 @@ jobs:
       - name: Push to github registry
         uses: redhat-actions/push-to-registry@v2
         with:
-          id: push-image
           image: ${{ github.event.repository.name }}
           tags: latest
           registry: ghcr.io/${{ github.repository_owner }}
