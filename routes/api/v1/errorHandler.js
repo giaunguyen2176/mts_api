@@ -35,7 +35,7 @@ module.exports = function () {
     // Always return client 200 status for handled situation
     // Client basically just need to care (200, 404 & 500)
     // In case of 200 they need to check success variable to determine the
-    res.status(400);
+    res.status(200);
     res.originalJSONResponse({
       data: {},
       success: false,
